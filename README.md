@@ -6,7 +6,7 @@
 
 ```
 bundle exec rubocop -A
-bundle exec bump patch
+bundle exec bump patch --tag --tag-prefix v
 git push origin main --tags
 ```
 
