@@ -1,6 +1,28 @@
 # vestauth-ruby
 
-> TODO
+```
+bundle install vestauth
+```
+
+```
+# app/controllers/application_controller.rb
+class ApplicationController < ActionController::Base
+  before_action :verify_agent!
+  helper_method :current_agent
+
+  private
+
+  def verify_agent!
+    @current_agent ||= Vestauth.provider.verify(http_method: request.method, uri: request.original_url, headers: request.headers)
+  rescue => e
+    render json: { error: { status: 401, code: 401, message: e.message } }, status: 401
+  end
+
+  def current_agent
+    @current_agent
+  end
+end
+```
 
 ## Development
 
