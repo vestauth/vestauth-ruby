@@ -53,5 +53,6 @@ jobs:
           curl -fsS https://dotenvx.sh/install.sh | sh
           export PATH="$HOME/.dotenvx/bin:$PATH"
           export RUBYGEMS_API_KEY="$(dotenvx get RUBYGEMS_API_KEY -f .env.ci)"
+          export GEM_HOST_API_KEY="$RUBYGEMS_API_KEY"
           bundle exec rake build
           gem push pkg/*.gem
