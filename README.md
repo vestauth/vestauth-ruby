@@ -6,6 +6,7 @@
 
 ```
 bundle exec rubocop -A
+bundle exec bump patch
 ```
 
 ## License
