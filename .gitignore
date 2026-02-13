@@ -1,0 +1,25 @@
+.DS_Store
+
+# Bundler
+/.bundle/
+/vendor/bundle
+
+# Test and coverage output
+/coverage/
+/.rspec_status
+
+# Build artifacts
+/*.gem
+/pkg/
+
+# Environment files
+/.env
+/.env.*
+
+# Editor folders
+/.idea/
+/.vscode/
+
+# Logs and temp files
+/*.log
+/tmp/
