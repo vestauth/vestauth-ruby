@@ -1,11 +1,15 @@
 # vestauth-ruby
 
+```sh
+curl -sSf https://vestauth.sh | sh
 ```
+
+```sh
 bundle install vestauth
 ```
 
-```
-# app/controllers/application_controller.rb
+```rb
+# example
 class ApplicationController < ActionController::Base
   before_action :verify_agent!
   helper_method :current_agent
