@@ -38,5 +38,4 @@ RSpec.describe Vestauth::Binary do
       end.to raise_error(Vestauth::Error, "bad signature")
     end
   end
-
 end
