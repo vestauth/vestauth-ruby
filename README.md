@@ -7,6 +7,7 @@
 ```
 bundle exec rubocop -A
 bundle exec bump patch
+git push origin main --tags
 ```
 
 ## License
