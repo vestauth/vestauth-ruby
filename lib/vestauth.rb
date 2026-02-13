@@ -2,6 +2,7 @@
 
 require_relative "vestauth/version"
 require_relative "vestauth/agent"
+require_relative "vestauth/binary"
 require_relative "vestauth/provider"
 
 module Vestauth
@@ -13,5 +14,9 @@ module Vestauth
 
   def self.agent
     Agent
+  end
+
+  def self.binary
+    Binary
   end
 end
