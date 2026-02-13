@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    vestauth (0.1.4)
+    vestauth (0.1.5)
 
 GEM
   remote: https://rubygems.org/
