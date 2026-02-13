@@ -15,6 +15,9 @@
 # Environment files
 /.env
 /.env.*
+!/.env.ci
+/.env.keys
+/.env.keys.*
 
 # Editor folders
 /.idea/

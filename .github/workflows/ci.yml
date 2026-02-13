@@ -29,18 +29,27 @@ jobs:
       - test
     if: startsWith(github.ref, 'refs/tags/v') && contains(github.ref, '.')
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     strategy:
       fail-fast: true
     steps:
       - name: checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      # GITHUB_ENV operates like a .env file
-      - name: extract version
+      - name: setup ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3.4'
+          bundler-cache: true
+
+      - name: release gem
+        env:
+          DOTENV_PRIVATE_KEY_CI: ${{ secrets.DOTENV_PRIVATE_KEY_CI }}
         run: |
-          VERSION=${GITHUB_REF#refs/tags/}
-          CLEAN_VERSION=${VERSION#v}
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "CLEAN_VERSION=$CLEAN_VERSION" >> $GITHUB_ENV
-
-
+          curl -fsS https://dotenvx.sh/install.sh | sh
+          export PATH="$HOME/.dotenvx/bin:$PATH"
+          export RUBYGEMS_API_KEY="$(dotenvx get RUBYGEMS_API_KEY -f .env.ci)"
+          bundle exec rake release
