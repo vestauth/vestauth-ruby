@@ -7,8 +7,8 @@ Gem::Specification.new do |spec|
   spec.version = Vestauth::VERSION
   spec.authors = ["motdotla"]
 
-  spec.summary = "auth for agents–from the creator of `dotenv` and `dotenvx`"
-  spec.description = "auth for agents–from the creator of `dotenv` and `dotenvx`"
+  spec.summary = "web-bot-auth for agents–from the creator of `dotenv` and `dotenvx`"
+  spec.description = "web-bot-auth for agents–from the creator of `dotenv` and `dotenvx`"
   spec.homepage = "https://vestauth.com"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.1.0"
