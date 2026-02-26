@@ -2,12 +2,12 @@
 
 RSpec.describe Vestauth::Binary do
   describe "#tool_verify" do
-    it "calls vestauth provider verify and parses json output" do
+    it "calls vestauth tool verify and parses json output" do
       status = instance_double(Process::Status, success?: true)
       binary = described_class.new
 
       expect(Open3).to receive(:capture3).with(
-        include("vestauth provider verify GET https://api.vestauth.com/whoami")
+        include("vestauth tool verify GET https://api.vestauth.com/whoami")
       ).and_return(['{"uid":"agent-123"}', "", status])
 
       result = binary.tool_verify(
