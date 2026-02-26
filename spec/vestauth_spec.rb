@@ -6,8 +6,9 @@ RSpec.describe Vestauth do
   end
 
   it "exposes namespaced tool/provider and agent modules" do
-    expect(Vestauth.tool).to eq(Vestauth::Provider)
-    expect(Vestauth.provider).to eq(Vestauth::Provider)
+    expect(Vestauth::Tool).to eq(Vestauth::Provider)
+    expect(Vestauth.tool).to eq(Vestauth::Tool)
+    expect(Vestauth.provider).to eq(Vestauth::Tool)
     expect(Vestauth.agent).to eq(Vestauth::Agent)
     expect(Vestauth.binary).to eq(Vestauth::Binary)
   end

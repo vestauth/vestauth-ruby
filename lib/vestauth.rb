@@ -3,13 +3,14 @@
 require_relative "vestauth/version"
 require_relative "vestauth/agent"
 require_relative "vestauth/binary"
+require_relative "vestauth/tool"
 require_relative "vestauth/provider"
 
 module Vestauth
   class Error < StandardError; end
 
   def self.tool
-    Provider
+    Tool
   end
 
   class << self
