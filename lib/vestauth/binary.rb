@@ -79,6 +79,7 @@ module Vestauth
     def serialize_json_arg(value, name:)
       return value if value.is_a?(String)
       return JSON.generate(value) if value.is_a?(Hash) || value.is_a?(Array)
+
       if value.respond_to?(:to_h)
         begin
           return JSON.generate(value.to_h)
@@ -92,7 +93,7 @@ module Vestauth
     end
 
     def action_controller_unfiltered_parameters?(error)
-      error.class.name == "ActionController::UnfilteredParameters"
+      error.instance_of?(::ActionController::UnfilteredParameters)
     end
   end
 end
