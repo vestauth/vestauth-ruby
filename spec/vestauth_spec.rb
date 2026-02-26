@@ -13,10 +13,10 @@ RSpec.describe Vestauth do
     expect(Vestauth.binary).to eq(Vestauth::Binary)
   end
 
-  it "delegates tool verify to binary provider_verify" do
+  it "delegates tool verify to binary tool_verify" do
     binary = instance_double(Vestauth::Binary)
     allow(Vestauth::Binary).to receive(:new).and_return(binary)
-    allow(binary).to receive(:provider_verify).and_return({ "uid" => "agent-123" })
+    allow(binary).to receive(:tool_verify).and_return({ "uid" => "agent-123" })
 
     result = Vestauth.tool.verify(
       http_method: "GET",
@@ -28,7 +28,7 @@ RSpec.describe Vestauth do
       }
     )
 
-    expect(binary).to have_received(:provider_verify).with(
+    expect(binary).to have_received(:tool_verify).with(
       http_method: "GET",
       uri: "https://api.vestauth.com/whoami",
       signature: "sig1=:abc:",
@@ -41,7 +41,7 @@ RSpec.describe Vestauth do
   it "passes through missing headers and lets binary verify fail if needed" do
     binary = instance_double(Vestauth::Binary)
     allow(Vestauth::Binary).to receive(:new).and_return(binary)
-    allow(binary).to receive(:provider_verify).and_return({ "success" => false })
+    allow(binary).to receive(:tool_verify).and_return({ "success" => false })
 
     Vestauth.tool.verify(
       http_method: "GET",
@@ -49,7 +49,7 @@ RSpec.describe Vestauth do
       headers: {}
     )
 
-    expect(binary).to have_received(:provider_verify).with(
+    expect(binary).to have_received(:tool_verify).with(
       http_method: "GET",
       uri: "https://api.vestauth.com/whoami",
       signature: nil,

@@ -10,10 +10,10 @@ module Vestauth
       @executable = executable
     end
 
-    def provider_verify(http_method:, uri:, signature:, signature_input:, signature_agent:)
+    def tool_verify(http_method:, uri:, signature:, signature_input:, signature_agent:)
       command = [
         @executable,
-        "provider",
+        "tool",
         "verify",
         http_method,
         uri,

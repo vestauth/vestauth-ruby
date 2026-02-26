@@ -16,7 +16,7 @@ module Vestauth
         signature_input: signature_input,
         signature_agent: signature_agent
       }
-      vestauth_binary.provider_verify(**attrs)
+      vestauth_binary.tool_verify(**attrs)
     end
 
     def vestauth_binary
