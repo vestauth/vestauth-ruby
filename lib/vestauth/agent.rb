@@ -4,11 +4,11 @@ module Vestauth
   module Agent
     module_function
 
-    def headers(http_method:, uri:, private_key:, id:)
+    def headers(http_method:, uri:, private_jwk:, id:)
       vestauth_binary.agent_headers(
         http_method: http_method,
         uri: uri,
-        private_key: private_key,
+        private_jwk: private_jwk,
         id: id
       )
     end

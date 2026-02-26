@@ -27,8 +27,8 @@ module Vestauth
       run_json_command(command)
     end
 
-    def agent_headers(http_method:, uri:, private_key:, id:)
-      private_jwk = serialize_json_arg(private_key, name: "private_key")
+    def agent_headers(http_method:, uri:, private_jwk:, id:)
+      private_jwk = serialize_json_arg(private_jwk, name: "private_jwk")
 
       command = [
         @executable,
@@ -45,8 +45,8 @@ module Vestauth
       run_json_command(command)
     end
 
-    def primitives_verify(http_method:, uri:, signature_header:, signature_input_header:, public_key:)
-      public_jwk = serialize_json_arg(public_key, name: "public_key")
+    def primitives_verify(http_method:, uri:, signature_header:, signature_input_header:, public_jwk:)
+      public_jwk = serialize_json_arg(public_jwk, name: "public_jwk")
 
       command = [
         @executable,

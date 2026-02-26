@@ -4,13 +4,13 @@ module Vestauth
   module Primitives
     module_function
 
-    def verify(http_method:, uri:, signature_header:, signature_input_header:, public_key:)
+    def verify(http_method:, uri:, signature_header:, signature_input_header:, public_jwk:)
       vestauth_binary.primitives_verify(
         http_method: http_method,
         uri: uri,
         signature_header: signature_header,
         signature_input_header: signature_input_header,
-        public_key: public_key
+        public_jwk: public_jwk
       )
     end
 

@@ -64,18 +64,18 @@ RSpec.describe Vestauth do
     allow(Vestauth::Binary).to receive(:new).and_return(binary)
     allow(binary).to receive(:agent_headers).and_return({ "Signature" => "sig1=:abc:" })
 
-    private_key = { "kty" => "EC" }
+    private_jwk = { "kty" => "EC" }
     result = Vestauth.agent.headers(
       http_method: "GET",
       uri: "https://api.vestauth.com/whoami",
-      private_key: private_key,
+      private_jwk: private_jwk,
       id: "agent-123"
     )
 
     expect(binary).to have_received(:agent_headers).with(
       http_method: "GET",
       uri: "https://api.vestauth.com/whoami",
-      private_key: private_key,
+      private_jwk: private_jwk,
       id: "agent-123"
     )
     expect(result).to eq({ "Signature" => "sig1=:abc:" })
@@ -86,13 +86,13 @@ RSpec.describe Vestauth do
     allow(Vestauth::Binary).to receive(:new).and_return(binary)
     allow(binary).to receive(:primitives_verify).and_return({ "success" => true })
 
-    public_key = instance_double("PublicKey")
+    public_jwk = instance_double("PublicJwk")
     result = Vestauth.primitives.verify(
       http_method: "GET",
       uri: "https://api.vestauth.com/whoami",
       signature_header: "sig1=:abc:",
       signature_input_header: "sig1=(\"@method\");keyid=\"kid-1\"",
-      public_key: public_key
+      public_jwk: public_jwk
     )
 
     expect(binary).to have_received(:primitives_verify).with(
@@ -100,7 +100,7 @@ RSpec.describe Vestauth do
       uri: "https://api.vestauth.com/whoami",
       signature_header: "sig1=:abc:",
       signature_input_header: "sig1=(\"@method\");keyid=\"kid-1\"",
-      public_key: public_key
+      public_jwk: public_jwk
     )
     expect(result).to eq({ "success" => true })
   end
