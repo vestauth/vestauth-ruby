@@ -5,18 +5,19 @@ RSpec.describe Vestauth do
     expect(Vestauth::VERSION).not_to be nil
   end
 
-  it "exposes namespaced provider and agent modules" do
+  it "exposes namespaced tool/provider and agent modules" do
+    expect(Vestauth.tool).to eq(Vestauth::Provider)
     expect(Vestauth.provider).to eq(Vestauth::Provider)
     expect(Vestauth.agent).to eq(Vestauth::Agent)
     expect(Vestauth.binary).to eq(Vestauth::Binary)
   end
 
-  it "delegates provider verify to binary provider_verify" do
+  it "delegates tool verify to binary provider_verify" do
     binary = instance_double(Vestauth::Binary)
     allow(Vestauth::Binary).to receive(:new).and_return(binary)
     allow(binary).to receive(:provider_verify).and_return({ "uid" => "agent-123" })
 
-    result = Vestauth.provider.verify(
+    result = Vestauth.tool.verify(
       http_method: "GET",
       uri: "https://api.vestauth.com/whoami",
       headers: {
@@ -41,7 +42,7 @@ RSpec.describe Vestauth do
     allow(Vestauth::Binary).to receive(:new).and_return(binary)
     allow(binary).to receive(:provider_verify).and_return({ "success" => false })
 
-    Vestauth.provider.verify(
+    Vestauth.tool.verify(
       http_method: "GET",
       uri: "https://api.vestauth.com/whoami",
       headers: {}

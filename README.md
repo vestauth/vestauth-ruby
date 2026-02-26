@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   private
 
   def verify_agent!
-    @current_agent ||= Vestauth.provider.verify(http_method: request.method, uri: request.original_url, headers: request.headers)
+    @current_agent ||= Vestauth.tool.verify(http_method: request.method, uri: request.original_url, headers: request.headers)
   rescue => e
     render json: { error: { status: 401, code: 401, message: e.message } }, status: 401
   end

@@ -8,8 +8,12 @@ require_relative "vestauth/provider"
 module Vestauth
   class Error < StandardError; end
 
-  def self.provider
+  def self.tool
     Provider
+  end
+
+  class << self
+    alias provider tool
   end
 
   def self.agent
