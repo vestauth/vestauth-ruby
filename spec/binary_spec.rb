@@ -140,5 +140,47 @@ RSpec.describe Vestauth::Binary do
 
       expect(result).to eq({ "success" => true })
     end
+
+    it "falls back to as_json when to_h raises ActionController::UnfilteredParameters" do
+      module ActionController
+        class UnfilteredParameters < StandardError; end
+      end
+
+      status = instance_double(Process::Status, success?: true)
+      binary = described_class.new
+      public_jwk = Class.new do
+        def to_h
+          raise ActionController::UnfilteredParameters, "unable to convert unpermitted parameters to hash"
+        end
+
+        def as_json
+          { "kty" => "EC" }
+        end
+      end.new
+
+      expect(Open3).to receive(:capture3).with(
+        "vestauth",
+        "primitives",
+        "verify",
+        "GET",
+        "https://api.vestauth.com/whoami",
+        "--signature",
+        "sig1=:abc:",
+        "--signature-input",
+        "sig1=(\"@method\");keyid=\"kid-1\"",
+        "--public-jwk",
+        '{"kty":"EC"}'
+      ).and_return(['{"success":true}', "", status])
+
+      result = binary.primitives_verify(
+        http_method: "GET",
+        uri: "https://api.vestauth.com/whoami",
+        signature_header: "sig1=:abc:",
+        signature_input_header: "sig1=(\"@method\");keyid=\"kid-1\"",
+        public_jwk: public_jwk
+      )
+
+      expect(result).to eq({ "success" => true })
+    end
   end
 end

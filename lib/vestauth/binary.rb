@@ -79,10 +79,20 @@ module Vestauth
     def serialize_json_arg(value, name:)
       return value if value.is_a?(String)
       return JSON.generate(value) if value.is_a?(Hash) || value.is_a?(Array)
-      return JSON.generate(value.to_h) if value.respond_to?(:to_h)
+      if value.respond_to?(:to_h)
+        begin
+          return JSON.generate(value.to_h)
+        rescue StandardError => e
+          raise unless action_controller_unfiltered_parameters?(e)
+        end
+      end
       return JSON.generate(value.as_json) if value.respond_to?(:as_json)
 
       raise ArgumentError, "#{name} must be a JSON string, Hash/Array, or object responding to #to_h"
+    end
+
+    def action_controller_unfiltered_parameters?(error)
+      error.class.name == "ActionController::UnfilteredParameters"
     end
   end
 end
