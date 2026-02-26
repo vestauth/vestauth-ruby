@@ -13,7 +13,7 @@ module Vestauth
   def self.agent
     Agent
   end
-  
+
   def self.tool
     Tool
   end
