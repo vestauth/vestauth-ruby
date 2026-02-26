@@ -28,7 +28,7 @@ module Vestauth
     end
 
     def agent_headers(http_method:, uri:, private_jwk:, id:)
-      private_jwk = serialize_json_arg(private_jwk, name: "private_jwk")
+      private_jwk = private_jwk.as_json.to_json
 
       command = [
         @executable,
@@ -46,7 +46,7 @@ module Vestauth
     end
 
     def primitives_verify(http_method:, uri:, signature_header:, signature_input_header:, public_jwk:)
-      public_jwk = serialize_json_arg(public_jwk, name: "public_jwk")
+      public_jwk = public_jwk.as_json.to_json
 
       command = [
         @executable,
@@ -74,34 +74,6 @@ module Vestauth
       raise Vestauth::Error, (stderr.to_s.strip.empty? ? stdout : stderr) unless status.success?
 
       JSON.parse(stdout)
-    end
-
-    def serialize_json_arg(value, name:)
-      return value if value.is_a?(String)
-
-      return JSON.generate(value) if value.is_a?(Hash) || value.is_a?(Array)
-
-      if value.respond_to?(:to_h)
-        json = serialize_json_arg_from_to_h(value)
-        return json unless json.nil?
-      end
-      return JSON.generate(value.as_json) if value.respond_to?(:as_json)
-
-      raise ArgumentError, "#{name} must be a JSON string, Hash/Array, or object responding to #to_h"
-    end
-
-    def serialize_json_arg_from_to_h(value)
-      JSON.generate(value.to_h)
-    rescue StandardError => e
-      raise unless action_controller_unfiltered_parameters?(e)
-
-      nil
-    end
-
-    def action_controller_unfiltered_parameters?(error)
-      error.instance_of?(Object.const_get("ActionController::UnfilteredParameters"))
-    rescue NameError
-      false
     end
   end
 end
