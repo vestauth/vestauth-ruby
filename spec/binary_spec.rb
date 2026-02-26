@@ -142,9 +142,8 @@ RSpec.describe Vestauth::Binary do
     end
 
     it "falls back to as_json when to_h raises ActionController::UnfilteredParameters" do
-      module ActionController
-        class UnfilteredParameters < StandardError; end
-      end
+      stub_const("ActionController", Module.new) unless defined?(ActionController)
+      stub_const("ActionController::UnfilteredParameters", Class.new(StandardError))
 
       status = instance_double(Process::Status, success?: true)
       binary = described_class.new
